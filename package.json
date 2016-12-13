@@ -1,0 +1,20 @@
+{
+  "name": "card-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node ./tests.js",
+    "start": "node ./server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyawagwin/card-game.git"
+  },
+  "author": "Kyaw Aung Win",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyawagwin/card-game/issues"
+  },
+  "homepage": "https://github.com/kyawagwin/card-game#readme"
+}
