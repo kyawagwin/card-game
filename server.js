@@ -1,3 +1,3 @@
-// TODO: ADD SOURCEMAP SUPPORT
+require("source-map-support").install();
 
 require("./build/server");
