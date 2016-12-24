@@ -5,9 +5,10 @@ import child_process from "child_process";
 
 const $ = require("gulp-load-plugins")();
 
-gulp.task("server:clean", cb => {
-	rimraf("./build", () => cb());
-});
+gulp.task("server:clean", 
+	cb => {
+		rimraf("./build", () => cb());
+	});
 
 gulp.task("server:build", 
 	gulp.series(
@@ -15,26 +16,30 @@ gulp.task("server:build",
 		compileServer
 	));
 
-gulp.task(
-	"server:watch", 
+gulp.task("server:watch", 
 	gulp.series("server:build", 
 		watchServer
 	));
 
-gulp.task("server:dev", gulp.series("server:build", gulp.parallel(
-	watchServer, 
-	runServer
-)));
+gulp.task("server:dev", 
+	gulp.series("server:build", 
+		gulp.parallel(
+			watchServer, 
+			runServer
+		)));
 
-gulp.task("server:test", gulp.series(
-	"server:build",
-	testServer
-));
+gulp.task("server:test", 
+	gulp.series(
+		"server:build",
+		testServer
+	));
 
-gulp.task("server:test:dev", gulp.series("server:build", gulp.parallel(
-	watchServer,
-	runServerTests
-)));
+gulp.task("server:test:dev", 
+	gulp.series("server:build", 
+		gulp.parallel(
+			watchServer,
+			runServerTests
+		)));
 
 function compileServer() {
 	return gulp.src("./src/server/**/*.js")
