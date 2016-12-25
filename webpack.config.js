@@ -8,7 +8,7 @@ const vendor = [
 ];
 
 function createConfig(isDebug) {
-	const devtools = isDebug ? "cheap-module-source-map" : null;
+	const devtool = isDebug ? "cheap-module-source-map" : null;
 	const plugins = [
 		new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js"),
 		new webpack.DefinePlugin({
@@ -23,7 +23,7 @@ function createConfig(isDebug) {
 	const loaders = {
 		js: { test: /\.jsx?$/, loader: "babel", exclude: /node_modules/ },
 		eslint: { test: /\.jsx?$/, loader: "eslint", exclude: /node_modules/ },
-		json: { test: /\.json$/, loader: "json", exclude: /node_modules/ },
+		json: { test: /\.json$/, loader: "json" },
 		css: { test: /\.css$/, loader: "style!css?sourceMap" },
 		sass: { test: /\.scss$/, loader: "style!css?sourceMap!sass?sourceMap" },
 		files: { test: /\.(png|jpg|jpeg|gif|woff|ttf|eot|svg|woff2)/, loader: "url-loader?limit=5000" }
@@ -35,12 +35,19 @@ function createConfig(isDebug) {
 	if(isDebug) {
 
 	} else {
+		plugins.push(
+			new webpack.optimize.DedupePlugin(),
+			new extractTextPlugin("[name].css"),
+			new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}})
+		);
 
+		loaders.css.loader = extractTextPlugin.extract("style", "css");
+		loaders.sass.loader = extractTextPlugin.extract("style", "css!sass");
 	}
 
 	return {
 		name: "client",
-		devtools,
+		devtool,
 		entry: {
 			app: clientEntry,
 			vendor
@@ -62,6 +69,9 @@ function createConfig(isDebug) {
 		plugins
 	};
 }
+
+// Linux and OSX: export NODE_ENV=production
+// Windows: SET NODE_ENV=production
 
 module.exports = createConfig(process.env.NODE_ENV !== "production");
 module.exports.create = createConfig;
