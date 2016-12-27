@@ -3,6 +3,7 @@ import path from "path";
 import rimraf from "rimraf";
 import child_process from "child_process";
 import webpack from "webpack";
+import webpackDevServer from "webpack-dev-server";
 
 import webpackConfig from "./webpack.config";
 
@@ -101,13 +102,23 @@ const consoleStats = {
 	exclude: ["node_modules"],
 	chunks: false,
 	assets: false,
-	timrings: false,
+	timings: false,
 	modules: false,
 	hash: false,
 	version: false
 };
 
-gulp.task("client:build", buildClient);
+gulp.task("client:clean", cb => {
+	rimraf("./public/build", () => cb());
+});
+gulp.task("client:build", gulp.series(
+	"client:clean",
+	buildClient
+));
+gulp.task("client:dev", gulp.series(
+	"client:clean",
+	watchClient
+));
 
 function buildClient(cb) {
 	webpack(webpackConfig, (err, stats) => {
@@ -120,3 +131,21 @@ function buildClient(cb) {
 		cb();
 	});
 }
+
+function watchClient() {
+	const compiler = webpack(webpackConfig);
+	const server = new webpackDevServer(compiler, {
+		publicPath: "/build",
+		hot: true,
+		stats: consoleStats
+	});
+
+	server.listen(8080, () => {
+
+	});
+}
+
+// 
+// dev tasks
+gulp.task("dev", gulp.parallel("server:dev", "client:dev"));
+gulp.task("build", gulp.parallel("server:build", "client:build"));
