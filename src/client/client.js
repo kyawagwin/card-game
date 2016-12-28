@@ -1,3 +1,8 @@
+import React from "react";
+import ReactDOM from "react-dom";
+
 import "./client.scss";
 
-console.log("hello world 12345");
+import AppContainer from "./components/app";
+
+ReactDOM.render(<AppContainer/>, document.getElementById("mount"));

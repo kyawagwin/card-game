@@ -4,7 +4,9 @@ var path = require("path"),
 	extractTextPlugin = require("extract-text-webpack-plugin");
 
 const vendor = [
-	"lodash"
+	"lodash",
+	"react",
+	"react-dom"
 ];
 
 function createConfig(isDebug) {
