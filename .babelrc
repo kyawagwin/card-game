@@ -7,7 +7,7 @@
         "transform-class-properties",
         "transform-object-rest-spread",
 
-        "transform-runtime",
+        "babel-polyfill",
 
         "react-hot-loader/babel"
     ]
